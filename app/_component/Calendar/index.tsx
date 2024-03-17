@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { getMonth, getYear } from 'date-fns';
-
+import { motion } from 'framer-motion';
 
 interface CalendarProps {
   date: Date;
@@ -22,12 +22,14 @@ const Calendar: React.FC<CalendarProps> = ({ date, setDate }) => {
 };
 const CalendarCell: React.FC<{ day: number | undefined, date: Date, setDate: Dispatch<SetStateAction<Date>> }> = ({ day, date, setDate }) => {
   return (
-    <button className={`flex justify-center items-center border border-gray-300 w-10 h-10 hover:bg-gray-200 ${day === date.getDate() ? 'bg-gray-500 hover:bg-gray-500' : ''} ${day === date.getDate() ? 'text-white' : ''}`} 
+    <motion.button 
+    whileHover={{scale:1.2}}  
+    className={`flex justify-center items-center border border-gray-300 w-10 h-10 hover:bg-gray-200 ${day === date.getDate() ? 'bg-gray-500 hover:bg-gray-500' : ''} ${day === date.getDate() ? 'text-white' : ''}`} 
     onClick={() => setDate(new Date(date.getFullYear(), date.getMonth(), day))}
     disabled={day === null}
     >
       {day}
-    </button>
+    </motion.button>
   );
 };
 
@@ -69,9 +71,17 @@ const CalendarHeader: React.FC<CalendarProps> = ({ date, setDate }) => {
   };
   return (
     <>
-      <button onClick={handlePrevMonth}>{"<<"}</button>
+      <motion.button 
+      whileHover={{scale:1.2}}
+      onClick={handlePrevMonth}>
+        {"<<"}
+      </motion.button>
         <span>{month}, {year}</span>
-      <button onClick={handleNextMonth}>{">>"}</button>
+      <motion.button 
+      whileHover={{scale:1.2}}
+      onClick={handleNextMonth}>
+        {">>"}
+      </motion.button>
     </>
   );
 };
