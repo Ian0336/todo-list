@@ -1,6 +1,5 @@
 "use client"
 import React, { useState, Dispatch, SetStateAction } from 'react';
-import { getMonth, getYear } from 'date-fns';
 import { motion } from 'framer-motion';
 
 interface CalendarProps {
@@ -24,6 +23,7 @@ const CalendarCell: React.FC<{ day: number | undefined, date: Date, setDate: Dis
   return (
     <motion.button 
     whileHover={{scale:1.2}}  
+    whileTap={{ scale: 0.9 }}
     className={`flex justify-center items-center border border-gray-300 w-10 h-10 hover:bg-gray-200 ${day === date.getDate() ? 'bg-gray-500 hover:bg-gray-500' : ''} ${day === date.getDate() ? 'text-white' : ''}`} 
     onClick={() => setDate(new Date(date.getFullYear(), date.getMonth(), day))}
     disabled={day === null}
@@ -61,18 +61,28 @@ return (
 );
 }
 const CalendarHeader: React.FC<CalendarProps> = ({ date, setDate }) => {
-  const month = getMonth(date) + 1; 
-  const year = getYear(date);
+  const month = date.getMonth() + 1; 
+  const year = date.getFullYear();
+  const today = new Date();
   const handlePrevMonth = () => {
-    setDate(new Date(year, month - 2, 1)); 
+    if(today.getMonth() == month - 2){
+     setDate(new Date(year, month - 2, today.getDate())); 
+    }else{
+      setDate(new Date(year, month - 2, 1)); 
+    }
   };
   const handleNextMonth = () => {
-    setDate(new Date(year, month, 1)); 
+    if(today.getMonth()== month){
+      setDate(new Date(year, month, today.getDate())); 
+    }else{
+      setDate(new Date(year, month, 1)); 
+    }
   };
   return (
     <>
       <motion.button 
       whileHover={{scale:1.2}}
+      whileTap={{ scale: 0.9 }}
       onClick={handlePrevMonth}>
         {"<<"}
       </motion.button>
